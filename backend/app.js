@@ -14,12 +14,23 @@ const limiter = rateLimit({
      windowMS: 15 * 60 * 100, //15 Minutes
      max: 100,
 })
-//CORS Options
-const corsOptions = {
-     origin: 'http://localhost:5173',
-     // optionsSuccessStatus: 200
+//CORS Implementation
+const allowedOrigins = [
+     "http://localhost:5173",
 
-}
+
+];
+
+const corsOptions = {
+     origin: function (origin, callback) {
+          if (!origin || allowedOrigins.includes(origin)) {
+               callback(null, true);
+          } else {
+               callback(new Error("Not allowed by CORS"));
+          }
+     },
+     optionsSuccessStatus: 200
+};
 //Middleware
 app.use(cors(corsOptions))
 app.use(express.json());
