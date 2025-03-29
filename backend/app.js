@@ -3,6 +3,7 @@ require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const axios = require('axios')
 const PORT = process.env.PORT || 5000
+const cors = require('cors');
 const app = express();
 //API KEY=
 const EXCHANGE_RATE_API_KEY = process.env.EXCHANGE_RATE_API_KEY;
@@ -13,7 +14,14 @@ const limiter = rateLimit({
      windowMS: 15 * 60 * 100, //15 Minutes
      max: 100,
 })
+//CORS Options
+const corsOptions = {
+     origin: 'http://localhost:5173',
+     // optionsSuccessStatus: 200
+
+}
 //Middleware
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(limiter);
 
